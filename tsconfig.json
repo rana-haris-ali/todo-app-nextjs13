@@ -18,7 +18,8 @@
     "paths": {
       "@/ui/*": ["ui/*"],
       "@/lib/*": ["lib/*"],
-      "@/styles/*": ["styles/*"]
+      "@/styles/*": ["styles/*"],
+      "@interfaces": ["lib/interfaces/index"]
     },
     "plugins": [
       {
