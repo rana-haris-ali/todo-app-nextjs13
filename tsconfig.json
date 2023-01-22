@@ -19,7 +19,7 @@
       "@/ui/*": ["ui/*"],
       "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"],
-      "@interfaces": ["lib/interfaces/index"]
+      "@dto": ["lib/dto/index"]
     },
     "plugins": [
       {

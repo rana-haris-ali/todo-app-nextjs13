@@ -1,20 +1,30 @@
 import { getUsers, createUser } from '@/lib/prisma/users'
 import { NextApiRequest, NextApiResponse } from 'next';
 import { StatusCodes } from 'http-status-codes';
+import { ZodError } from "zod";
+import { UserInputSchema } from '@dto'
+
+
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		if (req.method === 'GET') {
-			const { users, error } = await getUsers();
-			if (error) throw error;
-			res.status(StatusCodes.OK).json({ data: users });
-		}
-		else if (req.method === 'POST') {
-			const { user, error } = await createUser(req.body);
-			if (error) throw error;
-			res.status(StatusCodes.CREATED).json({ message: user })
+		switch (req.method) {
+			case 'GET':
+				const { users } = await getUsers();
+				return res.status(StatusCodes.OK).json({ data: users });
+
+			case 'POST':
+				const userInput = UserInputSchema.parse(JSON.parse(req.body));
+				const { user } = await createUser(userInput);
+				return res.status(StatusCodes.CREATED).json({ message: user })
+
+			default:
+				return res.status(StatusCodes.METHOD_NOT_ALLOWED);
 		}
 	} catch (err) {
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
+		if (err instanceof ZodError) {
+			return res.status(StatusCodes.BAD_REQUEST).json({ err });
+		}
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
 	}
 };

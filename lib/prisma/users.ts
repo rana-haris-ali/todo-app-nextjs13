@@ -1,19 +1,19 @@
 import prisma from './connector';
-import { CreateUser } from '@interfaces'
+import { UserInputType } from '@dto'
 
 export async function getUsers() {
 	try {
 		const users = await prisma.user.findMany()
 		return { users };
 	} catch (error) {
-		return { error }
+		throw error;
 	}
 }
-export async function createUser(userInput: CreateUser) {
+export async function createUser(userInput: UserInputType) {
 	try {
 		const user = await prisma.user.create({ data: userInput })
 		return { user };
 	} catch (error) {
-		return { error }
+		throw error;
 	}
 }
