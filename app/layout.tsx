@@ -1,3 +1,6 @@
+import '@/styles/globals.css';
+import Link from 'next/link';
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="container mx-auto">
+        <Link href="/todos">Todos</Link>
+        {children}
+      </body>
     </html>
   );
 }
