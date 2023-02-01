@@ -17,9 +17,11 @@
     "baseUrl": ".",
     "paths": {
       "@/ui/*": ["ui/*"],
+      "@/app/*": ["app/*"],
       "@/lib/*": ["lib/*"],
+      "@/public/*": ["public/*"],
       "@/styles/*": ["styles/*"],
-      "@dto": ["lib/dto/index"]
+      "@dto": ["lib/dto/index"],
     },
     "plugins": [
       {

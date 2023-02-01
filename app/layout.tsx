@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import Link from 'next/link';
+import Header from '@/app/header';
 
 export default function RootLayout({
   children,
@@ -8,9 +9,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="container mx-auto">
-        <Link href="/todos">Todos</Link>
-        {children}
+      <body className="bg-gradient-to-r from-indigo-900 to-[#7B2869] text-white">
+        <Header />
+        <div className="container mx-auto flex justify-center">{children}</div>
       </body>
     </html>
   );
