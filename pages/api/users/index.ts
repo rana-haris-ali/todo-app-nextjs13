@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				return res.status(StatusCodes.OK).json({ data: users });
 
 			case 'POST':
-				const userInput = UserInputSchema.parse(JSON.parse(req.body));
+				const userInput = UserInputSchema.parse(req.body);
 				const { user } = await createUser(userInput);
 				return res.status(StatusCodes.CREATED).json({ message: user })
 

@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				return res.status(StatusCodes.OK).json({ data: todos });
 
 			case 'POST':
-				const userInput = CreateTodoSchema.parse(JSON.parse(req.body));
+				const userInput = CreateTodoSchema.parse(req.body);
 				const { todo } = await createTodo(userInput);
 				return res.status(StatusCodes.OK).json({ data: todo });
 
