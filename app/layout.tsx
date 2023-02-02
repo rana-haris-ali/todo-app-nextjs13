@@ -11,7 +11,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-gradient-to-r from-indigo-900 to-[#7B2869] text-white">
         <Header />
-        <div className="container mx-auto flex justify-center">{children}</div>
+        <div className="container mx-auto">{children}</div>
       </body>
     </html>
   );
