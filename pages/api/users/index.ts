@@ -25,6 +25,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		if (err instanceof ZodError) {
 			return res.status(StatusCodes.BAD_REQUEST).json({ err });
 		}
+		if (err.code === 'P2002') {
+			return res.status(StatusCodes.BAD_REQUEST).json({ err: 'Email must be unique' });
+		}
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
 	}
 };

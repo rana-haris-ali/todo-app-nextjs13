@@ -4,12 +4,21 @@ import axios from 'axios';
 import { useState } from 'react';
 
 export default function Page() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nameValidationError, setNameValidationError] = useState('');
   const [emailValidationError, setEmailValidationError] = useState('');
   const [passwordValidationError, setPasswordValidationError] = useState('');
+  const [apiResponseError, setApiResponseError] = useState('');
 
-  const checkEmailValidity = () => {
+  const validate = () => {
+    const isNameValid = name !== '';
+
+    isNameValid
+      ? setNameValidationError('')
+      : setNameValidationError('Name must not be empty');
+
     const isEmailValid = email
       .toLowerCase()
       .match(
@@ -18,24 +27,29 @@ export default function Page() {
     isEmailValid
       ? setEmailValidationError('')
       : setEmailValidationError('Invalid Email');
-  };
-  const checkPasswordValidity = () => {
+
     const isPasswordValid = password.length >= 8;
     isPasswordValid
       ? setPasswordValidationError('')
       : setPasswordValidationError('Password must be 8 characters or more');
+
+    return isNameValid && isEmailValid && isPasswordValid ? true : false;
   };
 
   const handleSubmit = async () => {
-    checkEmailValidity();
-    checkPasswordValidity();
+    const isDataValid = validate();
 
-    // const {
-    //   data: { data: createdTodo },
-    // }: CreateTodoResponse = await axios.post('/api/users', {
-    //   email,
-    //   password,
-    // });
+    if (isDataValid) {
+      try {
+        await axios.post('/api/users', {
+          name,
+          email,
+          password,
+        });
+      } catch (error) {
+        setApiResponseError(error.message);
+      }
+    }
   };
   return (
     <section className="gradient-form h-full">
@@ -46,12 +60,29 @@ export default function Page() {
               <div className="g-0 lg:flex lg:flex-wrap">
                 <div className="px-4 md:px-0">
                   <div className="md:mx-6 md:p-12">
-                    <div className="text-center"></div>
+                    <p className="rounded bg-red-600 text-center text-sm text-white">
+                      {apiResponseError}
+                    </p>
                     <form>
-                      <p className="mb-4">
-                        Please Sign Up if you do not have an account
-                      </p>
-                      <div className="mb-4">
+                      <div>
+                        <p className="mb-4">
+                          Please Sign Up if you do not have an account
+                        </p>
+                      </div>
+                      <section className="mb-4">
+                        <input
+                          type="text"
+                          className="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
+                          placeholder="Your Name"
+                          name="userName"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <p className="rounded bg-red-600 text-center text-sm text-white">
+                          {nameValidationError}
+                        </p>
+                      </section>
+                      <section className="mb-4">
                         <input
                           type="email"
                           className="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
@@ -60,11 +91,11 @@ export default function Page() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                         />
-                        <h1 className="rounded bg-red-600 text-center text-sm text-white">
+                        <p className="rounded bg-red-600 text-center text-sm text-white">
                           {emailValidationError}
-                        </h1>
-                      </div>
-                      <div className="mb-4">
+                        </p>
+                      </section>
+                      <section className="mb-4">
                         <input
                           type="password"
                           className="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
@@ -72,11 +103,11 @@ export default function Page() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                         />
-                        <h1 className="rounded bg-red-600 text-center text-sm text-white">
+                        <p className="rounded bg-red-600 text-center text-sm text-white">
                           {passwordValidationError}
-                        </h1>
-                      </div>
-                      <div className="mb-12 pt-1 pb-1 text-center">
+                        </p>
+                      </section>
+                      <section className="mb-12 pt-1 pb-1 text-center">
                         <button
                           className="bg-green mb-3 inline-block w-full rounded bg-[#24273D] px-6 py-2.5 text-sm font-bold uppercase leading-tight text-gray-300 shadow-md transition duration-150 ease-in-out focus:shadow-lg focus:outline-none focus:ring-0 hover:bg-black hover:shadow-lg active:shadow-lg"
                           type="button"
@@ -84,8 +115,8 @@ export default function Page() {
                         >
                           Sign Up
                         </button>
-                      </div>
-                      <div className="flex items-center justify-between pb-6">
+                      </section>
+                      <section className="flex items-center justify-between pb-6">
                         <p className="mb-0 mr-2">Do you have an account?</p>
                         <button
                           type="button"
@@ -94,7 +125,7 @@ export default function Page() {
                         >
                           Log In
                         </button>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>

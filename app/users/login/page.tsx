@@ -1,57 +1,100 @@
+'use client';
+
+import { useState } from 'react';
+
 export default function Page() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailValidationError, setEmailValidationError] = useState('');
+  const [passwordValidationError, setPasswordValidationError] = useState('');
+  const [apiResponseError, setApiResponseError] = useState('');
+  const validate = () => {
+    const isNameValid = name !== '';
+
+    const isEmailValid = email
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+    isEmailValid
+      ? setEmailValidationError('')
+      : setEmailValidationError('Invalid Email');
+
+    const isPasswordValid = password.length >= 8;
+    isPasswordValid
+      ? setPasswordValidationError('')
+      : setPasswordValidationError('Password must be 8 characters or more');
+
+    return isNameValid && isEmailValid && isPasswordValid ? true : false;
+  };
+
+  function handleLogin() {
+    const isDataValid = validate();
+
+    if (isDataValid) {
+    }
+  }
+	
   return (
-    <section className="gradient-form h-full bg-gray-200 md:h-screen">
+    <section className="gradient-form h-full">
       <div className="container h-full py-12 px-6">
-        <div className=" g-6 flex h-full flex-wrap items-center justify-center text-gray-800">
+        <div className=" g-6 flex h-full flex-wrap items-center justify-center font-bold text-gray-300">
           <div className="">
-            <div className="block rounded-lg bg-white shadow-lg">
+            <div className="block rounded-lg">
               <div className="g-0 lg:flex lg:flex-wrap">
                 <div className="px-4 md:px-0">
                   <div className="md:mx-6 md:p-12">
-                    <div className="text-center">
-                      <h4 className="mt-1 mb-12 pb-1 text-xl font-semibold">
-                        Face Authentication by FaceIO
-                      </h4>
-                    </div>
+                    <p className="rounded bg-red-600 text-center text-sm text-white">
+                      {apiResponseError}
+                    </p>
                     <form>
-                      <p className="mb-4">
-                        Please Sign Up if you do not have an account
-                      </p>
-                      <div className="mb-4">
+                      <div>
+                        <p className="mb-4">Hello there!</p>
+                      </div>
+                      <section className="mb-4">
                         <input
                           type="email"
                           className="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
                           placeholder="Your Email"
                           name="userEmail"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                         />
-                      </div>
-                      <div className="mb-4">
+                        <p className="rounded bg-red-600 text-center text-sm text-white">
+                          {emailValidationError}
+                        </p>
+                      </section>
+                      <section className="mb-4">
                         <input
                           type="password"
                           className="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
                           placeholder="Password"
-                          name="pin"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                         />
-                      </div>
-                      <div className="mb-12 pt-1 pb-1 text-center">
+                        <p className="rounded bg-red-600 text-center text-sm text-white">
+                          {passwordValidationError}
+                        </p>
+                      </section>
+                      <section className="mb-12 pt-1 pb-1 text-center">
                         <button
-                          className="bg-green mb-3 inline-block w-full rounded px-6 py-2.5 text-xs font-medium uppercase leading-tight text-black shadow-md transition duration-150 ease-in-out focus:shadow-lg focus:outline-none focus:ring-0 hover:bg-blue-700 hover:shadow-lg active:shadow-lg"
+                          className="bg-green mb-3 inline-block w-full rounded bg-[#24273D] px-6 py-2.5 text-sm font-bold uppercase leading-tight text-gray-300 shadow-md transition duration-150 ease-in-out focus:shadow-lg focus:outline-none focus:ring-0 hover:bg-black hover:shadow-lg active:shadow-lg"
                           type="button"
-                          onClick={handleSubmit}
+                          onClick={handleLogin}
                         >
-                          Sign Up
+                          Login
                         </button>
-                      </div>
-                      <div className="flex items-center justify-between pb-6">
-                        <p className="mb-0 mr-2">Do you have an account?</p>
+                      </section>
+                      <section className="flex items-center justify-between pb-6">
+                        <p className="mb-0 mr-2">Don't have an account?</p>
                         <button
                           type="button"
-                          className="inline-block rounded border-2 border-green-600 px-6 py-2 text-xs font-medium uppercase leading-tight text-green-600 transition duration-150 ease-in-out focus:outline-none focus:ring-0 hover:bg-black hover:bg-opacity-5"
-                          onClick={handleLogIn}
+                          className="inline-block rounded bg-[#24273D] px-6 py-2 text-sm font-bold uppercase leading-tight text-gray-300 transition duration-150 ease-in-out focus:outline-none focus:ring-0 hover:bg-black"
+                          // onClick={handleLogIn}
                         >
-                          Log In
+                          Signup
                         </button>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
