@@ -1,6 +1,16 @@
 'use client';
 
+import axios from 'axios';
 import { useState } from 'react';
+import { redirect } from 'next/navigation';
+
+interface LoginResponse {
+  data: {
+    token: string;
+    userId: number;
+    username: string;
+  };
+}
 
 export default function Page() {
   const [email, setEmail] = useState('');
@@ -9,8 +19,6 @@ export default function Page() {
   const [passwordValidationError, setPasswordValidationError] = useState('');
   const [apiResponseError, setApiResponseError] = useState('');
   const validate = () => {
-    const isNameValid = name !== '';
-
     const isEmailValid = email
       .toLowerCase()
       .match(
@@ -25,16 +33,26 @@ export default function Page() {
       ? setPasswordValidationError('')
       : setPasswordValidationError('Password must be 8 characters or more');
 
-    return isNameValid && isEmailValid && isPasswordValid ? true : false;
+    return isEmailValid && isPasswordValid ? true : false;
   };
 
-  function handleLogin() {
+  async function handleLogin() {
     const isDataValid = validate();
 
     if (isDataValid) {
+      try {
+        const { data }: LoginResponse = await axios.post('/api/login', {
+          email,
+          password,
+        });
+        localStorage.setItem('LoginData', JSON.stringify(data));
+				redirect('/')
+      } catch (error) {
+        setApiResponseError(error.message);
+      }
     }
   }
-	
+
   return (
     <section className="gradient-form h-full">
       <div className="container h-full py-12 px-6">

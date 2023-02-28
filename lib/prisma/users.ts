@@ -33,7 +33,7 @@ export async function userLogin(loginInput: UserLoginType) {
 			throw new Error('Incorrect password', { cause: 'validation' });
 		}
 
-		return { userId: user.id };
+		return { userId: user.id, username: user.name };
 	} catch (error) {
 		throw error;
 	}

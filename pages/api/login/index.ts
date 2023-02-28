@@ -12,9 +12,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		switch (req.method) {
 			case 'POST':
 				const loginInput = UserLoginSchema.parse(req.body);
-				const { userId } = await userLogin(loginInput);
+				const { userId, username } = await userLogin(loginInput);
 				return res.status(StatusCodes.OK).json({
-					token: jwt.sign({ userId }, process.env.JWT_SECRET as string, { expiresIn: "2 days" })
+					token: jwt.sign({ userId }, process.env.JWT_SECRET as string, { expiresIn: "2 days" }),
+					userId,
+					username
 				});
 
 			default:
